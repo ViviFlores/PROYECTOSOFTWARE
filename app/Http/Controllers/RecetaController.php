@@ -17,7 +17,7 @@ class RecetaController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function __construct(){
-        $this->middleware('auth');
+        $this->middleware('auth', ['except'=>'show']);
     }
 
     public function index()
@@ -112,7 +112,9 @@ class RecetaController extends Controller
      */
     public function edit(Receta $receta)
     {
-        //
+        $categorias=Categoria::all(['id','nombre']);
+        return view('recetas.edit')->with('categorias',$categorias)
+                                   ->with('receta', $receta);
     }
 
     /**
@@ -124,7 +126,21 @@ class RecetaController extends Controller
      */
     public function update(Request $request, Receta $receta)
     {
-        //
+        $data=$request->validate([
+            'nombre'=>'required|min:6',
+            'categoria'=>'required',
+            'ingredientes'=>'required',
+            'preparacion'=>'required',
+        ]);
+        
+        //Asignar valores
+        $receta->nombre=$data['nombre'];
+        $receta->ingredientes=$data['ingredientes'];
+        $receta->preparacion=$data['preparacion'];
+        $receta->categoria_id=$data['categoria'];
+        $receta->save();
+        return redirect()->action('RecetaController@index');
+
     }
 
     /**

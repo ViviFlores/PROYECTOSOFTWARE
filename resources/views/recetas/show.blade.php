@@ -11,8 +11,24 @@
                 <span class="font-weight-bold text-primary">Categoria: </span>{{$receta->categoriaReceta->nombre}}
             </p>
             <p>
-                <span class="font-weight-bold text-primary">Autor: </span>{{$receta->user_id}}
+                <span class="font-weight-bold text-primary">Autor: </span>{{$receta->autorReceta->name}}
             </p>
+            <p>
+                <span class="font-weight-bold text-primary">Fecha: </span>
+                {{date('d-m-Y', strtotime($receta->created_at))}}
+            </p>
+
         </div>
+
+        <div class="ingredientes">
+            <h2 class="my-3 text-primary">Ingredientes</h2>
+            {!!$receta->ingredientes!!}
+        </div>
+
+        <div class="preparacion">
+            <h2 class="my-3 text-primary">Preparación</h2>
+            {!!$receta->preparacion!!}
+        </div>
+
     </article>
 @endsection
